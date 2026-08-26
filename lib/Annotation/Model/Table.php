@@ -45,6 +45,7 @@ use MwbExporter\Formatter\Doctrine2\Annotation\Configuration\TypehintArgument as
 use MwbExporter\Formatter\Doctrine2\Annotation\Configuration\TypehintReturnValue as TypehintReturnValueConfiguration;
 use MwbExporter\Formatter\Doctrine2\Configuration\AutomaticRepository as AutomaticRepositoryConfiguration;
 use MwbExporter\Formatter\Doctrine2\Configuration\RepositoryNamespace as RepositoryNamespaceConfiguration;
+use MwbExporter\Formatter\Doctrine2\Configuration\TableNamePrefix as TableNamePrefixConfiguration;
 use MwbExporter\Helper\ReservedWords;
 use MwbExporter\Model\ForeignKey;
 use MwbExporter\Writer\WriterInterface;
@@ -303,7 +304,8 @@ class Table extends BaseTable
                     $this->getAnnotation('Entity', ['repositoryClass' => $this->getConfig(AutomaticRepositoryConfiguration::class)->getValue() ? $repositoryNamespace.$this->getModelName().'Repository' : null])
                 )
                 ->writeIf($cacheMode, $this->getAnnotation('Cache', [$cacheMode]))
-                ->write($this->getAnnotation('Table', ['name' => $this->quoteIdentifier($this->getRawTableName()), 'indexes' => $this->getIndexesAnnotation('Index'), 'uniqueConstraints' => $this->getIndexesAnnotation('UniqueConstraint')], true))
+                ->write($this->getAnnotation('Table', ['name' => $this->quoteIdentifier($this->getConfig(TableNamePrefixConfiguration::class)->getValue() . $this->getRawTableName()),
+                        'indexes' => $this->getIndexesAnnotation('Index'), 'uniqueConstraints' => $this->getIndexesAnnotation('UniqueConstraint')], true))
                 ->writeIf(
                     $extendableEntityHasDiscriminator,
                     $this->getAnnotation('InheritanceType', ['SINGLE_TABLE'])
@@ -389,7 +391,7 @@ class Table extends BaseTable
                     ->write('')
                     ->writeIf($comment, $comment)
                     ->write($this->getAnnotation('Entity', ['repositoryClass' => $this->getConfig(AutomaticRepositoryConfiguration::class)->getValue() ? $repositoryNamespace.$this->getModelName().'Repository' : null]))
-                    ->write($this->getAnnotation('Table', ['name' => $this->quoteIdentifier($this->getRawTableName())]))
+                    ->write($this->getAnnotation('Table', ['name' => $this->quoteIdentifier($this->getConfig(TableNamePrefixConfiguration::class)->getValue() . $this->getRawTableName())]))
                 ->commentEnd()
                 ->write('class %s extends %s', $this->getClassName(), $this->getClassName(true))
                 ->write('{')
@@ -713,7 +715,7 @@ class Table extends BaseTable
                         ->write($this->getAnnotation(
                             'JoinTable',
                             [
-                                'name' => $this->quoteIdentifier($relation['reference']->getOwningTable()->getRawTableName()),
+                                'name' => $this->quoteIdentifier($this->getConfig(TableNamePrefixConfiguration::class)->getValue() . $relation['reference']->getOwningTable()->getRawTableName()),
                                 'joinColumns' => [$this->getJoins($fk1, false)],
                                 'inverseJoinColumns' => [$this->getJoins($fk2, false)],
                             ],
