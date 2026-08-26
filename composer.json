@@ -1,6 +1,6 @@
 {
 	"name" : "ucn-web/doctrine2-exporter",
-  "version": "23.1.0",
+  "version": "23.1.1",
 	"type" : "library",
 	"description" : "MySQL Workbench Schema Exporter for Doctrine 2",
 	"keywords" : [
@@ -10,7 +10,7 @@
 		"cli",
 		"doctrine"
 	],
-	"homepage" : "https://github.com/ucsite/doctrine2-exporter",
+	"homepage" : "https://github.com/ucn-web/doctrine2-exporter",
 	"license" : "MIT",
 	"authors" : [{
 			"name" : "Johannes Mueller",
