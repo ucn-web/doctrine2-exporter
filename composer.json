@@ -1,6 +1,6 @@
 {
 	"name" : "ucn-web/doctrine2-exporter",
-  "version": "23.1.1",
+  "version": "23.1.2",
 	"type" : "library",
 	"description" : "MySQL Workbench Schema Exporter for Doctrine 2",
 	"keywords" : [
