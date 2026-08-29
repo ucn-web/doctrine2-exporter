@@ -159,7 +159,7 @@ class Table extends BaseTable
                     foreach ($index->getColumns() as $column) {
                         $columns[] = $this->quoteIdentifier($column->getColumnName());
                     }
-                    $indices[] = $this->getAnnotation($type, ['name' => $index->getName(), 'columns' => $columns]);
+                    $indices[] = $this->getAnnotation($type, ['name' => $this->getConfig(TableNamePrefixConfiguration::class)->getValue() . $index->getName(), 'columns' => $columns]);
                     break;
                 default:
                     break;
